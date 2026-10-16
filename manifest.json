@@ -1,0 +1,9 @@
+{
+  "name": "देवा मेला इंटेलिजेंस ऐप",
+  "short_name": "देवा मेला",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f3f6f4",
+  "theme_color": "#123b31",
+  "lang": "hi"
+}

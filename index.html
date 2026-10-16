@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#123b31"><link rel="manifest" href="manifest.json">
+<title>देवा मेला इंटेलिजेंस ऐप — ऑनलाइन</title><link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><div><div class="eyebrow">ड्यूटी एवं सूचना प्रबंधन</div><h1>देवा मेला इंटेलिजेंस ऐप</h1><p>ऑनलाइन डेटाबेस संस्करण • हिंदी इंटरफेस</p></div><span id="connectionBadge" class="badge">सेटअप आवश्यक</span></header>
+<main>
+<section id="setupNotice" class="panel note">
+<strong>ऑनलाइन सर्वर कॉन्फ़िगरेशन आवश्यक है</strong>
+<p>यह पैकेज ऑनलाइन डेटाबेस से जुड़ने के लिए तैयार है। पहले Supabase प्रोजेक्ट बनाकर <code>config.js</code> में Project URL और anon/publishable key भरें तथा SQL सेटअप चलाएँ। जब तक कॉन्फ़िगरेशन पूरा न हो, ऐप केवल इस ब्राउज़र में स्थानीय डेमो मोड में डेटा रखेगा।</p>
+</section>
+<section id="loginPanel" class="panel login">
+<h2>लॉगिन</h2>
+<p class="muted">ऑनलाइन मोड में Supabase Auth के यूज़र से लॉगिन करें। बिना कॉन्फ़िगरेशन के डेमो लॉगिन उपलब्ध है।</p>
+<label>ईमेल / डेमो यूज़र आईडी<input id="username" autocomplete="username" placeholder="ईमेल या admin" value="admin"></label>
+<label>पासवर्ड<input id="password" type="password" autocomplete="current-password" placeholder="पासवर्ड" value="1234"></label>
+<button id="loginBtn">लॉगिन करें</button><small id="loginHint">स्थानीय डेमो: admin / 1234</small>
+</section>
+<div id="appPanel" class="hidden">
+<div class="session-row"><span id="sessionText">स्थानीय डेमो मोड</span><div><button id="syncBtn" class="secondary">सिंक / सर्वर से रीफ्रेश</button> <button id="logoutBtn" class="secondary">लॉग आउट</button></div></div>
+<nav class="tabs"><button data-tab="dashboard" class="active">डैशबोर्ड</button><button data-tab="duties">ड्यूटी चार्ट</button><button data-tab="incidents">घटना/सूचना</button><button data-tab="contacts">संपर्क</button></nav>
+<section id="dashboard" class="tab panel">
+<h2>डैशबोर्ड</h2><div class="stats"><div><b id="staffCount">0</b><span>कर्मचारी</span></div><div><b id="dutyCount">0</b><span>ड्यूटी आवंटन</span></div><div><b id="incidentCount">0</b><span>लॉग प्रविष्टियाँ</span></div></div>
+<h3>मेला क्षेत्र / जोन</h3><div id="zones" class="zone-grid"></div>
+<h3>चार्ट एवं ग्राफिक्स</h3><div class="charts-grid">
+<div class="chart-card"><h4>जोन के अनुसार ड्यूटी आवंटन</h4><p class="chart-subtitle">मौजूदा रिकॉर्ड</p><div id="zoneDutyChart" class="bar-chart"></div></div>
+<div class="chart-card"><h4>घटना/सूचना की स्थिति</h4><p class="chart-subtitle">नई, कार्रवाई जारी और निस्तारित</p><div id="statusChart" class="status-chart"></div><div id="statusLegend" class="legend"></div></div>
+<div class="chart-card"><h4>घटना श्रेणी सारांश</h4><div id="incidentTypeChart" class="bar-chart"></div></div>
+<div class="chart-card"><h4>त्वरित अवलोकन</h4><div id="overviewGraphics" class="overview-graphics"></div></div></div>
+<div class="note"><b>सुरक्षा चेतावनी:</b> वास्तविक पुलिस/खुफिया सूचना, व्यक्तिगत डेटा या संवेदनशील संपर्क किसी मुफ्त सार्वजनिक क्लाउड पर रखने से पहले विभागीय IT/साइबर सुरक्षा अनुमति लें। 2024 के जोन/ड्यूटी विवरण वर्तमान आधिकारिक रिकॉर्ड से सत्यापित करें।</div>
+<div class="actions"><button id="exportBtn">JSON बैकअप डाउनलोड</button><button id="resetBtn" class="danger">स्थानीय डेमो डेटा रीसेट</button></div>
+</section>
+<section id="duties" class="tab panel hidden"><h2>ड्यूटी चार्ट</h2>
+<div class="form-grid">
+<label>कर्मचारी का नाम<input id="staffName" placeholder="नाम"></label><label>पद/बल<input id="staffRank" placeholder="पद / बल"></label><label>मोबाइल (वैकल्पिक)<input id="staffPhone" inputmode="tel" placeholder="मोबाइल नंबर"></label><button id="addStaffBtn">कर्मचारी जोड़ें</button></div>
+<hr><h3>ड्यूटी आवंटन</h3><div class="form-grid">
+<label>कर्मचारी<select id="assignStaff"></select></label><label>जोन<select id="assignZone"></select></label><label>शिफ्ट<select id="assignShift"><option>प्रातः</option><option>दोपहर</option><option>सायं/रात्रि</option></select></label><label>स्थान/निर्देश<input id="assignPlace" placeholder="स्थान / निर्देश"></label><button id="manualAssignBtn">मैनुअल आवंटन</button><button id="autoAssignBtn" class="secondary">स्वचालित आवंटन</button></div>
+<div class="actions"><button id="printBtn">प्रिंट / PDF सेव करें</button></div><div id="printArea"><h3>देवा मेला ड्यूटी चार्ट</h3><div id="dutyTable"></div></div><h3>कर्मचारी सूची</h3><div id="staffTable"></div>
+</section>
+<section id="incidents" class="tab panel hidden"><h2>घटना / सूचना रजिस्टर</h2><div class="form-grid">
+<label>दिनांक/समय<input id="incidentTime" type="datetime-local"></label><label>जोन<select id="incidentZone"></select></label><label>प्रकार<select id="incidentType"><option>सामान्य सूचना</option><option>भीड़ प्रबंधन</option><option>यातायात</option><option>लापता व्यक्ति</option><option>संदिग्ध गतिविधि</option><option>चिकित्सा सहायता</option><option>अन्य</option></select></label><label>स्थिति<select id="incidentStatus"><option>नई</option><option>कार्रवाई जारी</option><option>निस्तारित</option></select></label><label class="wide">विवरण<textarea id="incidentDesc" rows="3" placeholder="विवरण"></textarea></label><label>कार्रवाई/टिप्पणी<input id="incidentAction" placeholder="की गई कार्रवाई"></label><button id="addIncidentBtn">रिकॉर्ड सुरक्षित करें</button></div><div id="incidentTable"></div>
+</section>
+<section id="contacts" class="tab panel hidden"><h2>संपर्क सूची</h2><p class="muted">केवल सत्यापित और अधिकृत नंबर दर्ज करें।</p><div class="form-grid">
+<label>नाम/कार्यालय<input id="contactName" placeholder="नाम / कार्यालय"></label><label>भूमिका<input id="contactRole" placeholder="भूमिका"></label><label>मोबाइल<input id="contactPhone" inputmode="tel" placeholder="मोबाइल नंबर"></label><button id="addContactBtn">संपर्क जोड़ें</button></div><div id="contactTable"></div></section>
+</div></main><footer>देवा मेला इंटेलिजेंस ऐप • ऑनलाइन-ready प्रोटोटाइप</footer>
+<script src="config.js"></script><script src="app.js"></script>
+</body></html>
